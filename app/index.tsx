@@ -62,9 +62,16 @@ export default function Index() {
       style={styles.container}
     >
       <SafeAreaView style={styles.safeArea}>
-        {/* Header (Clean, Minimalist) */}
+        {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Todos</Text>
+          <View>
+            <Text style={styles.title}>Inbox</Text>
+            <Text style={styles.subtitle}>
+              {todoItems.length === 0
+                ? "No tasks yet"
+                : `${todoItems.filter((t) => !t.isCompleted).length} remaining`}
+            </Text>
+          </View>
           <Image
             source={{ uri: "https://github.com/shadcn.png" }}
             style={styles.avatar}
@@ -74,9 +81,9 @@ export default function Index() {
         {/* Todo List */}
         {todoItems.length === 0 ? (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyStateText}>No todos yet!</Text>
+            <Text style={styles.emptyStateText}>All Clear</Text>
             <Text style={styles.emptyStateSubtext}>
-              Tap the + button to add your first todo
+              Add tasks to get started
             </Text>
           </View>
         ) : (
@@ -106,8 +113,8 @@ export default function Index() {
         <TouchableOpacity style={styles.fab} onPress={toggleSheet}>
           <Ionicons
             name={isSheetOpen ? "close" : "add"}
-            size={32}
-            color="brown"
+            size={24}
+            color="#fff"
           />
         </TouchableOpacity>
       </SafeAreaView>
@@ -118,7 +125,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fafafa",
+    backgroundColor: "#F2F2F7",
   },
   safeArea: {
     flex: 1,
@@ -127,22 +134,28 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
     paddingTop: 20,
+    paddingBottom: 16,
   },
   title: {
     fontSize: 34,
-    fontWeight: "800",
-    color: "brown",
+    fontWeight: "bold",
+    color: "#000000",
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 15,
+    color: "#8E8E93",
   },
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
+    backgroundColor: "#E5E5EA",
   },
   todoContainer: {
-    padding: 15,
-    paddingBottom: 100,
+    paddingVertical: 8,
   },
   emptyState: {
     flex: 1,
@@ -151,32 +164,29 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   emptyStateText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#666",
+    fontSize: 22,
+    fontWeight: "600",
+    color: "#000000",
     marginBottom: 8,
   },
   emptyStateSubtext: {
-    fontSize: 16,
-    color: "#999",
+    fontSize: 17,
+    color: "#8E8E93",
   },
   fab: {
     position: "absolute",
     bottom: 30,
-    right: 30,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#fff",
+    right: 20,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "#007AFF",
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 3,
-    borderColor: "#000",
     shadowColor: "#000",
-    shadowOffset: { width: 6, height: 6 },
-    shadowOpacity: 1,
-    shadowRadius: 1,
-    elevation: 10,
-    zIndex: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 5,
   },
 });

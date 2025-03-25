@@ -11,49 +11,79 @@ interface TodoItemProps {
 
 export function TodoItem({ todo, onDelete, onToggle }: TodoItemProps) {
   return (
-    <View style={styles.card}>
-      <Checkbox
-        style={styles.checkbox}
-        value={todo.isCompleted}
-        onValueChange={() => onToggle(todo.id)}
-      />
-      <Text
-        style={[
-          styles.text,
-          todo.isCompleted && { textDecorationLine: "line-through" },
-        ]}
-      >
-        {todo.title}
-      </Text>
-      <TouchableOpacity onPress={() => onDelete(todo.id)}>
-        <Ionicons name="trash" size={18} color={"red"} />
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => onToggle(todo.id)}
+      activeOpacity={0.7}
+    >
+      <View style={styles.card}>
+        <View style={styles.leftSection}>
+          <Checkbox
+            style={styles.checkbox}
+            value={todo.isCompleted}
+            onValueChange={() => onToggle(todo.id)}
+            color={todo.isCompleted ? "#007AFF" : undefined}
+          />
+          <Text style={[styles.text, todo.isCompleted && styles.completedText]}>
+            {todo.title}
+          </Text>
+        </View>
+        <TouchableOpacity
+          onPress={(e) => {
+            e.stopPropagation();
+            onDelete(todo.id);
+          }}
+          style={styles.deleteButton}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Ionicons name="trash-outline" size={16} color="#FF3B30" />
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginVertical: 4,
+    marginHorizontal: 16,
+  },
   card: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     backgroundColor: "#fff",
-    padding: 14,
-    marginVertical: 10,
-    borderRadius: 8,
-    borderWidth: 3,
-    borderColor: "#000",
-    shadowColor: "#000",
-    shadowOffset: { width: 6, height: 6 },
-    shadowOpacity: 1,
-    shadowRadius: 1,
-    elevation: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#E5E5EA",
+  },
+  leftSection: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
   },
   text: {
     flex: 1,
-    fontSize: 16,
-    marginLeft: 10,
+    fontSize: 17,
+    marginLeft: 12,
+    color: "#000000",
+    fontWeight: "400",
+  },
+  completedText: {
+    color: "#8E8E93",
+    textDecorationLine: "line-through",
   },
   checkbox: {
-    marginRight: 15,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 2,
+    borderColor: "#007AFF",
+  },
+  deleteButton: {
+    marginLeft: 12,
+    padding: 4,
   },
 });

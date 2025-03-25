@@ -78,24 +78,25 @@ export function AddTodoSheet({
         ]}
       >
         <View style={styles.handle} />
-        <Text style={styles.title}>Add New Todo</Text>
+        <Text style={styles.title}>New Task</Text>
         <View style={styles.inputContainer}>
           <TextInput
             ref={inputRef}
             style={styles.input}
             value={text}
             onChangeText={setText}
-            placeholder="Enter your todo..."
-            placeholderTextColor="#666"
+            placeholder="What's on your mind?"
+            placeholderTextColor="#8E8E93"
             onSubmitEditing={handleAdd}
             returnKeyType="done"
+            multiline
           />
         </View>
         <TouchableOpacity
           style={[styles.button, Platform.OS === "ios" && { marginBottom: 34 }]}
           onPress={handleAdd}
         >
-          <Text style={styles.buttonText}>Add Todo</Text>
+          <Text style={styles.buttonText}>Add Task</Text>
         </TouchableOpacity>
       </Animated.View>
     </>
@@ -121,67 +122,52 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 300,
-    backgroundColor: "#fafafa",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     padding: 20,
-    paddingTop: 0,
-    borderWidth: 3,
-    borderBottomWidth: 0,
-    borderColor: "#000",
+    paddingTop: 12,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: -6 },
-    shadowOpacity: 1,
-    shadowRadius: 1,
-    elevation: 10,
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 8,
     zIndex: 2,
   },
   handle: {
-    width: 40,
+    width: 36,
     height: 5,
-    backgroundColor: "#000",
-    borderRadius: 3,
+    backgroundColor: "#E5E5EA",
+    borderRadius: 2.5,
     alignSelf: "center",
-    marginVertical: 12,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: "brown",
-    marginBottom: 20,
+    fontSize: 17,
+    fontWeight: "600",
+    color: "#000000",
+    marginBottom: 16,
   },
   inputContainer: {
-    backgroundColor: "#fff",
-    borderWidth: 3,
-    borderColor: "#000",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 6, height: 6 },
-    shadowOpacity: 1,
-    shadowRadius: 1,
-    elevation: 10,
-    marginBottom: 20,
+    backgroundColor: "#F2F2F7",
+    borderRadius: 10,
+    marginBottom: 24,
   },
   input: {
-    padding: 15,
-    fontSize: 16,
+    padding: 16,
+    fontSize: 17,
+    color: "#000000",
+    minHeight: 80,
   },
   button: {
-    backgroundColor: "#fff",
-    padding: 15,
-    borderRadius: 8,
-    borderWidth: 3,
-    borderColor: "#000",
-    shadowColor: "#000",
-    shadowOffset: { width: 6, height: 6 },
-    shadowOpacity: 1,
-    shadowRadius: 1,
-    elevation: 10,
+    backgroundColor: "#007AFF",
+    padding: 16,
+    borderRadius: 10,
     alignItems: "center",
   },
   buttonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000",
+    fontSize: 17,
+    fontWeight: "600",
+    color: "#fff",
   },
 });
