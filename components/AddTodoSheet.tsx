@@ -17,7 +17,12 @@ interface AddTodoSheetProps {
   onAdd: (text: string) => void;
 }
 
-export function AddTodoSheet({ isOpen, translateY, onClose, onAdd }: AddTodoSheetProps) {
+export function AddTodoSheet({
+  isOpen,
+  translateY,
+  onClose,
+  onAdd,
+}: AddTodoSheetProps) {
   const [text, setText] = useState("");
   const inputRef = useRef<TextInput>(null);
 
@@ -86,11 +91,8 @@ export function AddTodoSheet({ isOpen, translateY, onClose, onAdd }: AddTodoShee
             returnKeyType="done"
           />
         </View>
-        <TouchableOpacity 
-          style={[
-            styles.button,
-            Platform.OS === "ios" && { marginBottom: 34 }
-          ]} 
+        <TouchableOpacity
+          style={[styles.button, Platform.OS === "ios" && { marginBottom: 34 }]}
           onPress={handleAdd}
         >
           <Text style={styles.buttonText}>Add Todo</Text>

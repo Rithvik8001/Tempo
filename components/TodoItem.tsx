@@ -12,10 +12,10 @@ interface TodoItemProps {
 export function TodoItem({ todo, onDelete, onToggle }: TodoItemProps) {
   return (
     <View style={styles.card}>
-      <Checkbox 
-        style={styles.checkbox} 
+      <Checkbox
+        style={styles.checkbox}
         value={todo.isCompleted}
-        onValueChange={() => onToggle(todo.id)} 
+        onValueChange={() => onToggle(todo.id)}
       />
       <Text
         style={[
