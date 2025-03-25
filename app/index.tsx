@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import {
   Text,
   View,
@@ -6,57 +7,111 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Animated,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
-import Checkbox from "expo-checkbox";
 import { Ionicons } from "@expo/vector-icons";
+import { TodoItem } from "../components/TodoItem";
+import { AddTodoSheet } from "../components/AddTodoSheet";
+import { Todo } from "../types";
+
+const SHEET_MAX_HEIGHT = 300;
 
 export default function Index() {
-  const todoItems = [
-    { id: 1, title: "Complete RN Todo list!", isCompleted: false },
-    { id: 2, title: "Study About Expo Router!", isCompleted: false },
-    { id: 3, title: "This is Third Todo!", isCompleted: true },
-    { id: 4, title: "This is Fourth Todo!", isCompleted: false },
-    { id: 5, title: "This is Fifth Todo!", isCompleted: false },
-  ];
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [todoItems, setTodoItems] = useState<Todo[]>([]);
+  const translateY = useRef(new Animated.Value(SHEET_MAX_HEIGHT)).current;
+
+  const toggleSheet = () => {
+    const toValue = isSheetOpen ? SHEET_MAX_HEIGHT : 0;
+    setIsSheetOpen(!isSheetOpen);
+
+    Animated.spring(translateY, {
+      toValue,
+      useNativeDriver: true,
+      bounciness: 2,
+    }).start();
+  };
+
+  const handleAddTodo = (text: string) => {
+    const newTodo = {
+      id: Date.now(),
+      title: text,
+      isCompleted: false,
+    };
+    setTodoItems([...todoItems, newTodo]);
+    toggleSheet();
+  };
+
+  const handleDeleteTodo = (id: number) => {
+    setTodoItems(todoItems.filter((todo) => todo.id !== id));
+  };
+
+  const handleToggleTodo = (id: number) => {
+    setTodoItems(
+      todoItems.map((todo) =>
+        todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
+      )
+    );
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header (Clean, Minimalist) */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Todos</Text>
-        <Image
-          source={{ uri: "https://github.com/shadcn.png" }}
-          style={styles.avatar}
-        />
-      </View>
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        {/* Header (Clean, Minimalist) */}
+        <View style={styles.header}>
+          <Text style={styles.title}>Todos</Text>
+          <Image
+            source={{ uri: "https://github.com/shadcn.png" }}
+            style={styles.avatar}
+          />
+        </View>
 
-      {/* Todo List (Neo-Brutalist Style) */}
-      <FlatList
-        contentContainerStyle={styles.todoContainer}
-        data={todoItems}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Checkbox style={styles.checkbox} value={item.isCompleted} />
-            <Text
-              style={[
-                styles.text,
-                item.isCompleted && { textDecorationLine: "line-through" },
-              ]}
-            >
-              {item.title}
+        {/* Todo List */}
+        {todoItems.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyStateText}>No todos yet!</Text>
+            <Text style={styles.emptyStateSubtext}>
+              Tap the + button to add your first todo
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                alert("Todo Deleted");
-              }}
-            >
-              <Ionicons name="trash" size={18} color={"red"} />
-            </TouchableOpacity>
           </View>
+        ) : (
+          <FlatList
+            contentContainerStyle={styles.todoContainer}
+            data={todoItems}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <TodoItem
+                todo={item}
+                onDelete={handleDeleteTodo}
+                onToggle={handleToggleTodo}
+              />
+            )}
+          />
         )}
-      />
-    </SafeAreaView>
+
+        {/* Add Todo Sheet */}
+        <AddTodoSheet
+          isOpen={isSheetOpen}
+          translateY={translateY}
+          onClose={toggleSheet}
+          onAdd={handleAddTodo}
+        />
+
+        {/* Floating Action Button */}
+        <TouchableOpacity style={styles.fab} onPress={toggleSheet}>
+          <Ionicons
+            name={isSheetOpen ? "close" : "add"}
+            size={32}
+            color="brown"
+          />
+        </TouchableOpacity>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -64,6 +119,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fafafa",
+  },
+  safeArea: {
+    flex: 1,
   },
   header: {
     flexDirection: "row",
@@ -84,30 +142,41 @@ const styles = StyleSheet.create({
   },
   todoContainer: {
     padding: 15,
+    paddingBottom: 100,
   },
-  card: {
+  emptyState: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 100,
+  },
+  emptyStateText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#666",
+    marginBottom: 8,
+  },
+  emptyStateSubtext: {
+    fontSize: 16,
+    color: "#999",
+  },
+  fab: {
+    position: "absolute",
+    bottom: 30,
+    right: 30,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     backgroundColor: "#fff",
-    padding: 14,
-    marginVertical: 10,
-    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 3,
     borderColor: "#000",
     shadowColor: "#000",
     shadowOffset: { width: 6, height: 6 },
     shadowOpacity: 1,
     shadowRadius: 1,
-    elevation: 10, // For Android
-    flexDirection: "row",
-    alignContent: "center",
-    justifyContent: "space-between",
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: "semibold",
-    textTransform: "uppercase",
-    color: "#000",
-  },
-  checkbox: {
-    marginRight: 15,
+    elevation: 10,
+    zIndex: 2,
   },
 });
