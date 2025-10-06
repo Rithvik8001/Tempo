@@ -3,7 +3,7 @@ dotenv.config();
 import express, { type Express } from "express";
 import connectDB from "./db/config/db.js";
 const app: Express = express();
-const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT;
 
 const main = async () => {
   try {
