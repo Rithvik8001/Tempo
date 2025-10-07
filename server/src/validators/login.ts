@@ -1,14 +1,7 @@
 import { z } from "zod";
 
-export const validateSignup = z
+export const validateLogin = z
   .object({
-    userName: z
-      .string()
-      .trim()
-      .min(4, { message: "Username is required" })
-      .min(4, { message: "User name cannot be less than 4 characters" })
-      .max(12, { message: "Username cannot be more than 12 characters" }),
-
     email: z
       .email({ message: "Enter a valid email address." })
       .trim()
@@ -28,11 +21,11 @@ export const validateSignup = z
   })
   .strict();
 
-export type signupData = z.infer<typeof validateSignup>;
+export type signupData = z.infer<typeof validateLogin>;
 
-const signupValidation = (payload: unknown) => {
-  const result = validateSignup.safeParse(payload);
+const loginValidation = (payload: unknown) => {
+  const result = validateLogin.safeParse(payload);
   return result;
 };
 
-export default signupValidation;
+export default loginValidation;

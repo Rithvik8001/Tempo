@@ -2,8 +2,16 @@ import dotenv from "dotenv";
 dotenv.config();
 import express, { type Express } from "express";
 import connectDB from "./db/config/db.js";
+
 const app: Express = express();
 const PORT = process.env.PORT;
+
+import userRoute from "./routes/user/user.ts";
+
+app.use(express.json());
+
+// routes
+app.use("/api", userRoute);
 
 const main = async () => {
   try {
