@@ -7,7 +7,6 @@ const taskSchema = new Schema(
       required: true,
       trim: true,
       min: 2,
-      max: 10,
     },
     userId: {
       type: Schema.Types.ObjectId,
