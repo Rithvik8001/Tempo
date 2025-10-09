@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { getAllTasks } from "../../controllers/task/getAllTasks.ts";
+import { deleteTask } from "../../controllers/task/deleteTask.ts";
 import { authMiddleware } from "../../middlewares/auth.ts";
 
 const route: Router = Router();
 
-route.get("/all", authMiddleware, getAllTasks);
+route.delete("/delete/:id", authMiddleware, deleteTask);
 
 export default route;

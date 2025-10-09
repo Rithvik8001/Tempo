@@ -5,11 +5,15 @@ const taskSchema = new Schema(
     taskName: {
       type: String,
       required: true,
+      trim: true,
+      min: 2,
+      max: 10,
     },
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      index: true,
     },
     description: {
       type: String,

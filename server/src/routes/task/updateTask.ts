@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { getAllTasks } from "../../controllers/task/getAllTasks.ts";
+import { updateTask } from "../../controllers/task/updateTask.ts";
 import { authMiddleware } from "../../middlewares/auth.ts";
 
 const route: Router = Router();
 
-route.get("/all", authMiddleware, getAllTasks);
+route.put("/update/:id", authMiddleware, updateTask);
 
 export default route;

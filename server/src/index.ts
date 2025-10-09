@@ -6,6 +6,7 @@ import cors from "cors";
 import "./types/express/index.ts";
 import connectDB from "./db/config/db.ts";
 import userRoute from "./routes/user/user.ts";
+import taskRoute from "./routes/task/task.ts";
 
 const app: Express = express();
 const PORT = process.env.PORT;
@@ -23,6 +24,7 @@ app.use(
 
 // Routes
 app.use("/api", userRoute);
+app.use("/api", taskRoute);
 
 const main = async () => {
   try {
