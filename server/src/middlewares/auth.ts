@@ -8,7 +8,13 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies.token;
+  const cookieToken = req.cookies?.token;
+  const authHeader = req.headers.authorization;
+  const bearerToken =
+    authHeader?.startsWith("Bearer") === true
+      ? authHeader.slice(7).trim()
+      : authHeader?.trim();
+  const token = cookieToken ?? bearerToken;
   if (!token) {
     return res.status(401).json({
       message: "User is not logged in.",

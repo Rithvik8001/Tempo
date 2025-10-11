@@ -17,15 +17,9 @@ export const userProfile = async (req: Request, res: Response) => {
       });
     }
 
-    const { userName, email, createdAt, updatedAt } = profile;
     return res.status(200).json({
       message: "User profile retrieved successfully.",
-      data: {
-        userName,
-        email,
-        createdAt,
-        updatedAt,
-      },
+      data: profile,
     });
   } catch (error) {
     return res.status(500).json({

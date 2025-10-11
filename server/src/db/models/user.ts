@@ -20,7 +20,7 @@ const userSchema = new Schema(
       select: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const User = model("User", userSchema);

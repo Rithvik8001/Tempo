@@ -1,0 +1,22 @@
+meta {
+  name: /task/create
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:3000/api/task/create
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "taskName":"Complete the video",
+    "description":"complete the update api"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
